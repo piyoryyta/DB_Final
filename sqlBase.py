@@ -1,35 +1,37 @@
-import psycopg2
+import os
+from dotenv import load_dotenv
+from flask import Flask, jsonify
+from flask_sqlalchemy import SQLAlchemy
 
-db_config = {
-    "dbname": "postgres",
-    "user": "postgres",
-    "password": "password",
-    "host": "localhost",
-    "port": "5432",
-}
+# .envファイルから環境変数を読み込む
+load_dotenv()
 
+app = Flask(__name__)
 
-def connect():
+# PostgreSQLデータベースの設定
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# SQLAlchemyオブジェクトの初期化
+db = SQLAlchemy(app)
+
+# サンプルモデルの定義（テーブル名を'users'に変更）
+class User(db.Model):
+    __tablename__ = 'users'  # テーブル名を明示的に'users'と指定
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f'<User {self.username}>'
+
+@app.route('/')
+def index():
     try:
-        conn = psycopg2.connect(**db_config)
-        cursor = conn.cursor()
-        return conn, cursor
+        users = User.query.all()
+        return jsonify([{'id': user.id, 'username': user.username} for user in users])
+        print("Template path:", app.jinja_loader.get_source(app.jinja_env, 'index.html'))
     except Exception as e:
-        print(e)
-        return None, None
+        return jsonify({'error': str(e)}), 500
 
-
-def main():
-    conn, cursor = connect()
-    if conn is not None and cursor is not None:
-        print("Connection successful")
-        cursor.execute("SELECT * FROM table_name")
-        raw = cursor.fetchall()
-        # cursor.fetchone() # get one row
-        # cursor.fetchmany(5) # get 5 rows
-        for r in raw:
-            print(f"{r[0]} {r[1]}")
-        cursor.close()
-        conn.close()
-    else:
-        print("Connection failed")
+if __name__ == '__main__':
+    app.run(debug=True)
