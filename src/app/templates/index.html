@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>在庫管理システム</title>
+    </head>
+    <body>
+        <div class="flex min-h-screen min-w-screen flex-col text-white">
+            <div
+                class="tex-center flex h-28 items-center justify-center bg-blue-950 text-7xl"
+            >
+                在庫管理
+            </div>
+            <div class="flex flex-grow items-center justify-center gap-10">
+                <a
+                    href="/use-return"
+                    class="rounded-lg bg-blue-700 px-12 py-4 text-2xl duration-200 hover:bg-blue-900"
+                >
+                    使用・返却
+                </a>
+                <a
+                    href="/item"
+                    class="rounded-lg bg-red-700 px-12 py-4 text-2xl duration-200 hover:bg-red-900"
+                >
+                    アイテム管理
+                </a>
+            </div>
+        </div>
+    </body>
+</html>
