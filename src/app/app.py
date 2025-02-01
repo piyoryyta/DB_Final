@@ -20,7 +20,7 @@ def use_return():
     return render_template("use_return.html")
 
 
-@app.route("/api/items", methods=["GET"])
+@app.route("/api/item", methods=["GET"])
 def get_items():
     if request.method == "GET":
         id = request.args.get("id")

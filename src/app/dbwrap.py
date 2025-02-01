@@ -67,7 +67,7 @@ class _DBQuery:
         else:
             raise ValueError("Invalid condition")
         return self
-    
+
     def _build_where(self, query):
         for w in self._where:
             if w["op"] == "eq":

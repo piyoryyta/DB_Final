@@ -1,19 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="touch-action: manipulation;">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="icon"
+            href="{{url_for('static', filename='icons/icon_72x72.png')}}"
+            type="image/png"
+        />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/static/images/icons/favicon.ico"
+        />
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="{{url_for('static', filename='javascript/use_return.js')}}"></script>
         <title>使用・返却 - 在庫管理システム</title>
     </head>
     <body>
-        <div class="flex min-h-screen min-w-screen flex-col text-white">
+        <div class="flex min-h-screen min-w-screen flex-col bg-stone-100">
             <div
-                class="tex-center flex h-28 items-center justify-center bg-blue-950 text-7xl"
+                class="flex h-28 items-center justify-center bg-blue-950 text-7xl text-white"
             >
                 使用・返却
             </div>
-            
+            <div class="item-list flex grow p-3 gap-10 overflow-x-scroll items-center">
+                <!-- itembox comes here -->
+                <div class="add-itembox w-[2px] h-20 bg-stone-300 rounded-full"></div>
+                <div class="min-w-40 h-80 bg-stone-200 rounded-xl">
+                    <form class="addItemById flex items-center justify-center gap-2">
+                        <input type="text" class="itemCode border-2 rounded-lg" placeholder="アイテムコード">
+                        <button type="submit" class ="addItem" id="addItem">+</button>
+                    </form>
+                </div>
         </div>
     </body>
 </html>
