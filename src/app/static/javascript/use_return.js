@@ -1,13 +1,5 @@
 $(function () {
     const items = [];
-    class Item {
-        constructor(id, name, total, available) {
-            this.id = id;
-            this.name = name;
-            this.total = total;
-            this.available = available;
-        }
-    }
 
     const spinner = $("<div>", {
         class: "spinner absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2",
@@ -23,29 +15,17 @@ $(function () {
         const itembox = createItemBox(index, item);
         const _spinner = spinner.clone();
         itembox.append(_spinner);
-        itembox.insertBefore(".add-itembox");
-        $.ajax({
-            url: "/api/item",
-            type: "GET",
-            data: { id: item.id },
-        }).then(
-            (data) => {
-                if (data.length == 0) {
-                    showError("在庫IDが見つかりませんでした。");
-                    removeItembox(index);
-                    return;
-                }
-                data = data[0];
-                item = new Item(
-                    item.id,
-                    data.item_name,
-                    data.item_total_amount,
-                    data.item_left_amount
-                );
+        itembox.insertBefore("#itemListSeparator");
+        getItemById(
+            item.id,
+            (items) => {
                 onItemboxLoad(index, item);
             },
+            () => {
+                showError("在庫IDが見つかりませんでした。");
+                removeItembox(index);
+            },
             (error) => {
-                console.error(error);
                 showError("在庫情報の取得に失敗しました。");
             }
         );
@@ -101,14 +81,17 @@ $(function () {
                     if (!$(this).val() || $(this).val() == NaN) {
                         $(this).val(0);
                     }
-                    if (parseInt($(this).val()) > parseInt($(this).attr("max"))) {
+                    if (
+                        parseInt($(this).val()) > parseInt($(this).attr("max"))
+                    ) {
                         $(this).val($(this).attr("max"));
                     }
-                    if (parseInt($(this).val()) < parseInt($(this).attr("min"))) {
+                    if (
+                        parseInt($(this).val()) < parseInt($(this).attr("min"))
+                    ) {
                         $(this).val($(this).attr("min"));
                     }
-                }
-                ),
+                }),
                 $("<button>", {
                     class: "bg-white rounded-full w-8 h-8 mx-1 hover:bg-stone-100 duration-100 border-t-gray-600 active:border-t-2",
                     id: `item-${index}-increase`,
@@ -160,22 +143,35 @@ $(function () {
     }
 
     function sendRequest() {
+        if (items.length == 0) {
+            showError("在庫を追加してください。");
+            return;
+        }
         const data = items.map((item, index) => {
             return {
-                id: item.id,
-                quantity: parseInt($(`#item-${index}-quantity`).val()),
+                item_id: parseInt(item.id),
+                item_amount: parseInt($(`#item-${index}-quantity`).val()),
+                item_left_amount:
+                    item.available -
+                    parseInt($(`#item-${index}-quantity`).val()),
             };
         });
+        user_id = "0"; // Dummy user_id
+        console.log(data);
         $.ajax({
-            url: "/api/return",
+            url: "/api/use-return",
             type: "POST",
-            data: { items: data },
+            data: { data: JSON.stringify(data), user_id: user_id },
         }).then(
             (data) => {
                 if (data.success) {
-                    window.location.href = "/return";
+                    for (let i = 0; i < items.length; i++) {
+                        // For the users who dare to use the back button
+                        removeItembox(i);
+                    }
+                    window.location.href = "/use-return/complete";
                 } else {
-                    showError(data.message);
+                    showError(data.error);
                 }
             },
             (error) => {
@@ -187,12 +183,27 @@ $(function () {
 
     $(".addItemById").submit(function (event) {
         event.preventDefault();
-        const id = $(this).find(".itemCode").val();
+        itemCode = $(this).find(".itemCode");
+        itemCode.val(
+            itemCode
+                .val()
+                .replace(/[０-９]/g, function (s) {
+                    return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
+                })
+                .replace(/[^0-9]/g, "")
+        );
+        if (!itemCode.val()) {
+            return;
+        }
+        const id = itemCode.val();
         if (items.some((item) => item.id == id)) {
             showError("すでに読み込まれている在庫です。");
             return;
         }
         addItembox(id);
-    }
-    );
+    });
+
+    $(".use-return").on("click", function () {
+        sendRequest();
+    });
 });

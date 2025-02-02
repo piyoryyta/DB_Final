@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 from dbwrap import DB
+import json
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
@@ -16,8 +17,66 @@ def index():
 
 @app.route("/use-return")
 def use_return():
-
     return render_template("use_return.html")
+
+
+@app.route("/use-return/complete")
+def use_return_complete():
+    return render_template("use_return_complete.html")
+
+
+@app.route("/api/use-return", methods=["POST"])
+def use_return_api():
+    if request.method == "POST":
+        data = request.form["data"]
+        data = json.loads(data)
+        user_id = request.form["user_id"]
+        db.query().table("historyset").insert({"user_id": user_id}).execute()
+        historyset_id = (
+            db.query()
+            .table("historyset")
+            .select("historyset_id")
+            .order("historyset_id", "desc")
+            .limit(1)
+            .execute()[0]["historyset_id"]
+        )
+        for item in data:
+            db.query().table("history").insert(
+                {
+                    "item_id": item["item_id"],
+                    "item_amount": item["item_amount"],
+                    "historyset_id": historyset_id,
+                }
+            ).execute()
+            db.query().table("items").update(
+                {"item_left_amount": item["item_left_amount"]}
+            ).where("item_id", "=", item["item_id"]).execute()
+        return jsonify({"success": True, "historyset_id": historyset_id})
+    return jsonify({"error": "Invalid request"})
+
+
+@app.route("/api/historyset/<int:historyset_id>")
+def get_historyset(historyset_id):
+    res = {"error": "Invalid request"}
+    user_id_res = (
+        db.query()
+        .table("historyset")
+        .select("*")
+        .where("historyset_id", "=", historyset_id)
+        .execute()
+    )
+    if len(user_id_res) > 0:
+        user_id = user_id_res[0]["user_id"]
+        created_at = user_id_res[0]["created_at"]
+        history = (
+            db.query()
+            .table("history")
+            .select("history_id, item_id, item_amount")
+            .where("historyset_id", "=", historyset_id)
+            .execute()
+        )
+        res = {"historyset_id": historyset_id, "created_at": created_at, "user_id": user_id, "history": history}
+    return jsonify(res)
 
 
 @app.route("/api/item", methods=["GET"])

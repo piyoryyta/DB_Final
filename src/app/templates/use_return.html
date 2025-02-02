@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="touch-action: manipulation;">
+<html lang="en" style="touch-action: manipulation">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,25 +15,60 @@
         />
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="{{url_for('static', filename='javascript/item.js')}}"></script>
         <script src="{{url_for('static', filename='javascript/use_return.js')}}"></script>
         <title>使用・返却 - 在庫管理システム</title>
     </head>
     <body>
         <div class="flex min-h-screen min-w-screen flex-col bg-stone-100">
             <div
-                class="flex h-28 items-center justify-center bg-blue-950 text-7xl text-white"
+                class="flex p-5 items-center justify-center bg-blue-950 text-xl text-white lg:text-7xl"
             >
                 使用・返却
             </div>
-            <div class="item-list flex grow p-3 gap-10 overflow-x-scroll items-center">
+            <div
+                class="item-list flex grow p-3 gap-10 overflow-x-scroll items-center"
+            >
                 <!-- itembox comes here -->
-                <div class="add-itembox w-[2px] h-20 bg-stone-300 rounded-full"></div>
-                <div class="min-w-40 h-80 bg-stone-200 rounded-xl">
-                    <form class="addItemById flex items-center justify-center gap-2">
-                        <input type="text" class="itemCode border-2 rounded-lg" placeholder="アイテムコード">
-                        <button type="submit" class ="addItem" id="addItem">+</button>
+                <div
+                    class="w-[2px] h-20 bg-stone-300 rounded-full"
+                    id="itemListSeparator"
+                ></div>
+                <div
+                    class="w-70 h-60 bg-stone-200 rounded-xl transition-all transform p-3 shadow-lg"
+                >
+                    <label for="itemCode" class="text-2xl w-full"
+                        >コードで追加</label
+                    >
+                    <form class="addItemById relative gap-2 w-full">
+                        <input
+                            type="text"
+                            class="itemCode border-2 rounded-lg h-10 p-3"
+                            placeholder="在庫コード"
+                        />
+
+                        <button
+                            type="submit"
+                            class="addItem absolute rounded-lg p-3 h-5 w-5 right-3 top-[50%] translate-y-[-100%]"
+                            id="addItem"
+                        >
+                            +
+                        </button>
+                        <div
+                            class="w-[2px] h-5 absolute bg-stone-300 rounded-full right-7 top-[50%] translate-y-[-50%]"
+                        ></div>
                     </form>
                 </div>
+            </div>
+            <div
+                class="flex justify-center items-center max-h-20 bg-stone-300 text-3xl grow"
+            >
+                <button
+                    class="use-return bg-blue-800 text-white rounded-lg p-3 hover:bg-blue-900 active:bg-blue-950"
+                >
+                    登録
+                </button>
+            </div>
         </div>
     </body>
 </html>
