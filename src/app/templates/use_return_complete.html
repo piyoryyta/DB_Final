@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="icon"
+            href="{{url_for('static', filename='icons/icon_72x72.png')}}"
+            type="image/png"
+        />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/static/images/icons/favicon.ico"
+        />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>在庫管理システム</title>
+    </head>
+    <body>
+        <div class="flex min-h-screen min-w-screen flex-col text-white">
+            <div
+                class="flex p-5 items-center justify-center bg-blue-950 text-xl text-white lg:text-7xl"
+            >
+                貸出/返却完了
+            </div>
+            <div
+                class="flex flex-grow items-center justify-center gap-10 bg-stone-100 text-black"
+            >
+                <div>
+                    {% if is_use %}
+                    <p>貸出が完了しました。</p>
+                    {% for history in histories %} {% if history.item_amount >
+                    0%}
+                    <p>
+                        ID: {{history.item_id}} {{history.item_name}}
+                        x{{history.item_amount}}
+                    </p>
+                    {% endif %} {% endfor %} {% endif %}
+                    <br />
+                    {% if is_return %}
+                    <p>返却が完了しました。</p>
+                    {% for history in histories %} {% if 0 > history.item_amount
+                    %}
+                    <p>
+                        ID: {{history.item_id}} {{history.item_name}}
+                        x{{history.item_amount}}
+                    </p>
+                    {% endif %} {% endfor %} {% endif %}
+                </div>
+
+                <div>
+                    <a href="/" class="bg-blue-950 text-white p-3 rounded-lg">
+                        戻る
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

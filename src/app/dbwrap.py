@@ -15,6 +15,9 @@ class DB:
     def query(self):
         return _DBQuery(self)
 
+    def function(self, name: str, args: dict):
+        return self.client.rpc(name, args).execute()
+
 
 class _DBQuery:
 

@@ -20,9 +20,29 @@ def use_return():
     return render_template("use_return.html")
 
 
-@app.route("/use-return/complete")
-def use_return_complete():
-    return render_template("use_return_complete.html")
+@app.route("/use-return/complete/<int:historyset_id>")
+def use_return_complete(historyset_id):
+    history = db.function("get_items_in_history", {"historyset_id": historyset_id}).data
+    #               SELECT history.item_id, item_name, item_amount, item_total_amount, item_left_amount
+    #               FROM history
+    #               LEFT JOIN items ON history.item_id = items.item_id
+    #               WHERE history.historyset_id = $1;
+
+    is_use = False
+    is_return = False
+    if history:
+        for item in history:
+            if item["item_amount"] > 0:
+                is_use = True
+            elif item["item_amount"] < 0:
+                is_return = True
+    print(history)
+    return render_template(
+        "use_return_complete.html",
+        histories=history,
+        is_use=is_use,
+        is_return=is_return,
+    )
 
 
 @app.route("/api/use-return", methods=["POST"])
@@ -75,7 +95,12 @@ def get_historyset(historyset_id):
             .where("historyset_id", "=", historyset_id)
             .execute()
         )
-        res = {"historyset_id": historyset_id, "created_at": created_at, "user_id": user_id, "history": history}
+        res = {
+            "historyset_id": historyset_id,
+            "created_at": created_at,
+            "user_id": user_id,
+            "history": history,
+        }
     return jsonify(res)
 
 

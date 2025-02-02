@@ -147,6 +147,12 @@ $(function () {
             showError("在庫を追加してください。");
             return;
         }
+        for (let i = 0; i < items.length; i++) {
+            if ($(`#item-${i}-quantity`).val() == 0) {
+                showError("変更量が0の在庫があります。");
+                return;
+            }
+        }
         const data = items.map((item, index) => {
             return {
                 item_id: parseInt(item.id),
@@ -169,7 +175,8 @@ $(function () {
                         // For the users who dare to use the back button
                         removeItembox(i);
                     }
-                    window.location.href = "/use-return/complete";
+                    window.location.href =
+                        "/use-return/complete/" + data.historyset_id;
                 } else {
                     showError(data.error);
                 }
