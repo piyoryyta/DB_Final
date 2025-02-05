@@ -164,15 +164,37 @@ $(function () {
         });
         user_id = "0"; // Dummy user_id
         console.log(data);
-        $.ajax({
-            url: "/api/use-return",
-            type: "POST",
-            data: { data: JSON.stringify(data), user_id: user_id },
-        }).then(
+        // $.ajax({
+        //     url: "/api/use-return",
+        //     type: "POST",
+        //     data: { data: JSON.stringify(data), user_id: user_id },
+        // }).then(
+        //     (data) => {
+        //         if (data.success) {
+        //             for (let i = 0; i < items.length; i++) {
+        //                 // For the users who dare to use the back button
+        //                 removeItembox(i);
+        //             }
+        //             window.location.href =
+        //                 "/use-return/complete/" + data.historyset_id;
+        //         } else {
+        //             showError(data.error);
+        //         }
+        //     },
+        //     (error) => {
+        //         console.error(error);
+        //         showError("リクエストの送信に失敗しました。");
+        //     }
+        // );
+        requestUseReturn(
+            user_id,
+            items,
+            items.map((item, index) => {
+                return parseInt($(`#item-${index}-quantity`).val());
+            }),
             (data) => {
                 if (data.success) {
                     for (let i = 0; i < items.length; i++) {
-                        // For the users who dare to use the back button
                         removeItembox(i);
                     }
                     window.location.href =
@@ -185,7 +207,7 @@ $(function () {
                 console.error(error);
                 showError("リクエストの送信に失敗しました。");
             }
-        );
+        )
     }
 
     $(".addItemById").submit(function (event) {

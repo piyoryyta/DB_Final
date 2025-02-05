@@ -53,12 +53,43 @@ function getItemById(
             }
             ret = data[0];
             item = new Item(
-                        ret.item_id,
-                        ret.item_name,
-                        ret.item_total_amount,
-                        ret.item_left_amount
-                    );
+                ret.item_id,
+                ret.item_name,
+                ret.item_total_amount,
+                ret.item_left_amount
+            );
             onSuccessCallback(item);
+        },
+        (error) => {
+            onErrorCallback(error);
+        }
+    );
+}
+
+function requestUseReturn(
+    user_id,
+    items,
+    items_amount,
+    onSuccessCallback = (data) => {},
+    onErrorCallback = (error) => {}
+) {
+    const data = items.map((item, index) => {
+        return {
+            item_id: item.id,
+            item_amount: items_amount[index],
+            item_left_amount: item.available - items_amount[index],
+        };
+    });
+    $.ajax({
+        url: "/api/use-return",
+        type: "POST",
+        data: {
+            data: JSON.stringify(data),
+            user_id: user_id,
+        },
+    }).then(
+        (data) => {
+            onSuccessCallback(data);
         },
         (error) => {
             onErrorCallback(error);
