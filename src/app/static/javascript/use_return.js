@@ -2,7 +2,7 @@ $(function () {
     const items = [];
 
     const spinner = $("<div>", {
-        class: "spinner absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2",
+        class: "spinner absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
     }).append(
         $("<div>", {
             class: "animate-spin h-10 w-10 border-4 border-blue-500/10 rounded-full border-t-blue-500",

@@ -13,10 +13,10 @@
             type="image/x-icon"
             href="/static/images/icons/favicon.ico"
         />
-        <script src="https://cdn.tailwindcss.com"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="{{url_for('static', filename='javascript/item.js')}}"></script>
         <script src="{{url_for('static', filename='javascript/use_return.js')}}"></script>
+        <link rel="stylesheet" href="/static/css/styles.css" />
         <title>使用・返却 - 在庫管理システム</title>
     </head>
     <body>
@@ -109,6 +109,13 @@
                 >
                     取消
                 </button>
+            </div>
+            <div
+                class="spinner absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            >
+                <div
+                    class="animate-spin h-10 w-10 border-4 border-blue-500/10 rounded-full border-t-blue-500"
+                ></div>
             </div>
         </div>
     </body>
