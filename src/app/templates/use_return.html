@@ -70,5 +70,46 @@
                 </button>
             </div>
         </div>
+        <!-- A hack for the tailwind css to generate the styles for jquery generated elements -->
+        <div class="hidden" id="hack">
+            <div
+                class="itembox relative py-2 px-8 h-0.7 bg-stone-200 rounded-xl shadow-lg flex flex-col items-center"
+                id="itembox-0"
+            >
+                <div class="max-w-60">
+                    <p class="text-3xl font-bold m-1" id="item-0-name">
+                        .m2ネジ
+                    </p>
+                    <p class="text-sm" id="item-0-code">在庫コード:0001</p>
+                    <p class="text-sm" id="item-0-stock">在庫残り:12/20</p>
+                </div>
+                <div class="p-2 flex justify-center items-center text-2xl">
+                    <button
+                        class="bg-white rounded-full w-8 h-8 mx-1 hover:bg-stone-100 duration-100 border-t-gray-600 active:border-t-2"
+                        id="item-0-decrease"
+                    >
+                        -</button
+                    ><input
+                        class="item-quantity bg-white w-16 p-2 mx-1 rounded-xs text-center"
+                        id="item-0-quantity"
+                        value="0"
+                        type="number"
+                        max="12"
+                        min="-8"
+                    /><button
+                        class="bg-white rounded-full w-8 h-8 mx-1 hover:bg-stone-100 duration-100 border-t-gray-600 active:border-t-2"
+                        id="item-0-increase"
+                    >
+                        +
+                    </button>
+                </div>
+                <button
+                    class="bg-stone-800 text-white rounded-xl w-32 h-8 m-2 hover:bg-stone-700 duration-200 active:bg-stone-500"
+                    id="item-0-revert"
+                >
+                    取消
+                </button>
+            </div>
+        </div>
     </body>
 </html>

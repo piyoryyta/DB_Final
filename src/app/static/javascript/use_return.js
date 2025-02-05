@@ -213,4 +213,6 @@ $(function () {
     $(".use-return").on("click", function () {
         sendRequest();
     });
+
+    $("#hack").remove();
 });
