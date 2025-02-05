@@ -45,6 +45,11 @@ def use_return_complete(historyset_id):
     )
 
 
+@app.route("/items")
+def items():
+    return render_template("items.html", items=items)
+
+
 @app.route("/api/use-return", methods=["POST"])
 def use_return_api():
     if request.method == "POST":

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="icon"
+            href="{{url_for('static', filename='icons/icon_72x72.png')}}"
+            type="image/png"
+        />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/static/images/icons/favicon.ico"
+        />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>在庫管理システム</title>
+    </head>
+    <body>
+        <div class="flex h-screen w-screen flex-col text-white">
+            <div
+                class="flex p-5 items-center justify-center bg-red-950 text-xl text-white lg:text-7xl"
+            >
+                アイテム管理
+            </div>
+            <div class="flex-1 bg-stone-100 p-5 min-h-0 flex">
+                <div
+                    class="item-list flex flex-col gap-3 h-full overflow-y-auto p-5 w-70 text-center text-xl shrink-0"
+                >
+                    <div
+                        class="p-3 bg-transparent outline-red-900 outline-2 out rounded-md text-black"
+                    >
+                        + 追加
+                    </div>
+                    <a class="p-3 bg-red-400 rounded-md">ID: 0001 .m2ねじ</a>
+                    <div class="p-3 bg-red-900 rounded-md">
+                        ID: 0002 .m2ねじ
+                    </div>
+                    <div class="p-3 bg-red-900 rounded-md">
+                        ID: 0003 .m2ねじ
+                    </div>
+                    <div class="p-3 bg-red-900 rounded-md">
+                        ID: 0004 .m2ねじ
+                    </div>
+                    <div class="p-3 bg-red-900 rounded-md">
+                        ID: 0005 .m2ねじ
+                    </div>
+                    <div class="p-3 bg-red-900 rounded-md">
+                        ID: 0006 .m2ねじ
+                    </div>
+                    <div class="p-3 bg-red-900 rounded-md">
+                        ID: 0007 .m2ねじ
+                    </div>
+                </div>
+                <div class="w-[2px] h-full bg-gray-500 rounded-full"></div>
+                <div
+                    class="item-detail flex flex-col p-5 basis-5xl grow text-black h-full overflow-auto whitespace-nowrap"
+                >
+                    <div class="text-xl md:text-4xl">ID</div>
+                    <div class="pl-12 detail-item-name text-lg md:text-5xl">
+                        0001
+                    </div>
+                    <div class="text-xl md:text-4xl">名称</div>
+                    <div class="pl-12 detail-item-name text-lg md:text-5xl">
+                        .m2ねじ
+                    </div>
+                    <div class="text-xl md:text-4xl">残り/全数</div>
+                    <div class="pl-12 detail-item-name text-lg md:text-5xl">
+                        10/50
+                    </div>
+                    <details class="text-xl md:text-4xl">
+                        <summary>貸出履歴</summary>
+                        <table
+                            class="p-10 pl-12 text-lg md:text-4xl border-collapse [&_td]:border-1 bg-gray-50 grow"
+                        >
+                            <tr class="bg-gray-300">
+                                <th>日付</th>
+                                <th>ユーザーID</th>
+                                <th>ユーザー名</th>
+                                <th>貸出/返却</th>
+                                <th>数量</th>
+                            </tr>
+                            <tr>
+                                <td>2022/01/12</td>
+                                <td>0</td>
+                                <td>テスト</td>
+                                <td>貸出</td>
+                                <td>1</td>
+                            </tr>
+                        </table>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
