@@ -47,7 +47,7 @@ def use_return_complete(historyset_id):
 
 @app.route("/items")
 def items():
-    return render_template("items.html", items=items)
+    return render_template("items.html")
 
 
 @app.route("/api/use-return", methods=["POST"])
@@ -122,6 +122,9 @@ def get_items():
                 .where("item_id", "=", id)
                 .execute()
             )
+            return jsonify(res)
+        else:
+            res = db.query().table("items").select("*").execute()
             return jsonify(res)
     return jsonify({"error": "Invalid request"})
 
