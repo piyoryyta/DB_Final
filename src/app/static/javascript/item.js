@@ -7,6 +7,34 @@ class Item {
     }
 }
 
+function getItems(
+    onSuccessCallback = (items) => {},
+    onErrorCallback = (error) => {}
+) {
+    $.ajax({
+        url: "/api/item",
+        type: "GET",
+    }).then(
+        (data) => {
+            items = [];
+            for (let i = 0; i < data.length; i++) {
+                ret = data[i];
+                item = new Item(
+                    ret.item_id,
+                    ret.item_name,
+                    ret.item_total_amount,
+                    ret.item_left_amount
+                );
+                items.push(item);
+            }
+            onSuccessCallback(items);
+        },
+        (error) => {
+            onErrorCallback(error);
+        }
+    );
+}
+
 function getItemById(
     id,
     onSuccessCallback = (item) => {},

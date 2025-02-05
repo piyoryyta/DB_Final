@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+details[disabled] summary,
+details.disabled summary {
+  pointer-events: none;
+  user-select: none;
+}
