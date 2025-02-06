@@ -1,3 +1,4 @@
 python-dotenv
 flask
 supabase
+gunicorn==19.9.0
