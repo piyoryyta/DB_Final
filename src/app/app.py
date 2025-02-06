@@ -265,45 +265,41 @@ def get_users():
         else:
             return jsonify({"error": "Update failed: user_id not found"}), 404
     elif request.method == "POST":
-        print(request.form)
-        return ""
-        # data = request.form["data"]
-        # data = json.loads(data)
-        # try:
-        #     ret = (
-        #         db.query()
-        #         .table("users")
-        #         .insert({"user_name": data["name"]})
-        #         .execute()
-        #     )
-        #     if ret.data != []:
-        #         return jsonify({"success": True, "user_id": ret.data[0]["user_id"]})
-        #     else:
-        #         return jsonify({"error": "Insert failed"}), 500
-        # except Exception:
-        #     return jsonify({"error": "Insert failed by API error"}), 500
+        data = request.form["data"]
+        data = json.loads(data)
+        try:
+            ret = (
+                db.query()
+                .table("users")
+                .insert({"user_name": data["name"], "user_id": data["id"]})
+                .execute()
+            )
+            if ret.data != []:
+                return jsonify({"success": True, "user_id": ret.data[0]["user_id"]})
+            else:
+                return jsonify({"error": "Insert failed"}), 500
+        except Exception:
+            return jsonify({"error": "Insert failed by API error"}), 500
     elif request.method == "DELETE":
-        print(request.form)
-        return ""
-        # id = request.form["id"]
-        # if id:
-        #     try:
-        #         ret = (
-        #             db.query()
-        #             .table("users")
-        #             .delete()
-        #             .where("user_id", "=", id)
-        #             .execute()
-        #         )
-        #         if ret.data != []:
-        #             return jsonify({"success": True})
-        #         else:
-        #             return jsonify({"error": "Delete failed: user_id not found"}), 404
-        #     except Exception as e:
-        #         print(e)
-        #         return jsonify({"error": "Delete failed by API error"}), 500
-        # else:
-        #     return jsonify({"error": "Invalid request"}), 400
+        id = request.form["id"]
+        if id:
+            try:
+                ret = (
+                    db.query()
+                    .table("users")
+                    .delete()
+                    .where("user_id", "=", id)
+                    .execute()
+                )
+                if ret.data != []:
+                    return jsonify({"success": True})
+                else:
+                    return jsonify({"error": "Delete failed: user_id not found"}), 404
+            except Exception as e:
+                print(e)
+                return jsonify({"error": "Delete failed by API error"}), 500
+        else:
+            return jsonify({"error": "Invalid request"}), 400
     return jsonify({"error": "Invalid request"}), 400
 
 
