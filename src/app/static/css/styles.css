@@ -720,6 +720,10 @@ video {
   width: 10rem;
 }
 
+.w-12 {
+  width: 3rem;
+}
+
 .max-w-60 {
   max-width: 15rem;
 }
@@ -730,6 +734,10 @@ video {
 
 .shrink-0 {
   flex-shrink: 0;
+}
+
+.shrink {
+  flex-shrink: 1;
 }
 
 .flex-grow {
@@ -1111,6 +1119,11 @@ details.disabled summary {
 .disabled\:bg-gray-500:disabled {
   --tw-bg-opacity: 1;
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+}
+
+.disabled\:bg-gray-400:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
 }
 
 .aria-selected\:bg-sky-400[aria-selected="true"] {

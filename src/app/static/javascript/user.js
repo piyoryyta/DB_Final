@@ -16,7 +16,7 @@ const current_user =
     $.cookie("user") == null
         ? new User({ user_id: -1, user_name: "ゲスト" })
         : new User(JSON.parse($.cookie("user")));
-console.log(current_user);
+console.log("Logging in as "+current_user);
 
 function Login(id) {
     $.ajax({
@@ -72,7 +72,8 @@ function GetUser(
     );
 }
 
-function CreateUser(
+function AddUser(
+    id,
     name,
     onSuccessCallback = (user) => {},
     onErrorCallback = (error) => {}
@@ -80,7 +81,12 @@ function CreateUser(
     $.ajax({
         url: "/api/user",
         type: "POST",
-        data: { name: name },
+        data: {
+            data: JSON.stringify({
+                id: id,
+                name: name,
+            }),
+        },
     }).then(
         (data) => {
             onSuccessCallback(data);
@@ -100,7 +106,27 @@ function UpdateUser(
     $.ajax({
         url: "/api/user",
         type: "PUT",
-        data: { id: id, name: name },
+        data: JSON.stringify({ id: id, name: name }),
+        contentType: "application/json",
+    }).then(
+        (data) => {
+            onSuccessCallback(data);
+        },
+        (error) => {
+            onErrorCallback(error);
+        }
+    );
+}
+
+function DeleteUser(
+    id,
+    onSuccessCallback = (user) => {},
+    onErrorCallback = (error) => {}
+) {
+    $.ajax({
+        url: "/api/user",
+        type: "DELETE",
+        data: { id: id },
     }).then(
         (data) => {
             onSuccessCallback(data);

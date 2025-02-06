@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="icon"
+            href="{{url_for('static', filename='icons/icon_72x72.png')}}"
+            type="image/png"
+        />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/static/images/icons/favicon.ico"
+        />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+        <script src="static/javascript/user.js"></script>
+        <script src="static/javascript/users.js"></script>
+        <link rel="stylesheet" href="/static/css/styles.css" />
+        <title>ユーザー管理</title>
+    </head>
+    <body>
+        <div class="flex h-screen w-screen flex-col text-white bg-stone-100">
+            <div
+                class="flex p-5 items-center justify-center bg-sky-950 text-xl text-white lg:text-7xl"
+            >
+                ユーザー管理
+            </div>
+            <a
+                href="{{url_for('index')}}"
+                class="flex p-5 items-center w-40 m-3 rounded-lg justify-center bg-sky-900 text-md text-white lg:text-2xl"
+                >戻る</a
+            >
+            <div class="flex-1 p-5 min-h-0 flex">
+                <div
+                    class="user-list relative flex flex-col gap-3 h-full overflow-y-auto p-5 w-100 text-center text-xl shrink-0"
+                >
+                    <button
+                        id="addUser"
+                        class="p-3 bg-sky-900 rounded-md aria-selected:bg-sky-400"
+                    >
+                        + 追加
+                    </button>
+                    <!-- Item list -->
+                </div>
+                <div class="w-[2px] h-full bg-gray-500 rounded-full"></div>
+                <fieldset
+                    class="user-detail flex flex-col p-5 gap-0 basis-5xl grow text-black h-full overflow-auto whitespace-nowrap md:gap-5"
+                    disabled="true"
+                >
+                    <div
+                        class="update-delete flex gap-3 items-end text-lg md:text-3xl"
+                    >
+                        <div class="flex-grow"></div>
+                        <button
+                            class="update-user bg-sky-400 rounded-lg px-3 py-1 disabled:bg-gray-500"
+                        >
+                            登録/更新
+                        </button>
+                        <button
+                            class="delete-user bg-red-800 text-white rounded-lg px-3 py-1 disabled:bg-gray-500"
+                        >
+                            削除
+                        </button>
+                    </div>
+                    <div class="text-xl md:text-4xl">ID</div>
+                        <input
+                            type="text"
+                            class="mx-12 detail-user-id text-lg rounded-lg md:text-5xl disabled:bg-gray-500"
+                            value="???"
+                            placeholder="???"
+                            disabled
+                        />
+                        一度登録すると変更できません
+                    <div class="text-xl md:text-4xl">名称</div>
+                    <input
+                        type="text"
+                        class="mx-12 detail-user-name text-lg rounded-lg md:text-5xl disabled:bg-gray-500"
+                        value="ユーザー名"
+                        placeholder="ユーザー名"
+                    />
+                </fieldset>
+            </div>
+        </div>
+        <!-- A hack for tailwindcss to generate the CSS for jquery generated elements -->
+        <div class="hidden" id="hack">
+            <button
+                class="userbox p-3 bg-sky-900 rounded-md aria-selected:bg-sky-600"
+                id="userbox-2"
+                user_id="2"
+                aria-selected="true"
+            >
+                ID: 2, ハンマー
+            </button>
+            <div
+                class="spinner absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            >
+                <div
+                    class="animate-spin h-10 w-10 border-4 border-blue-500/10 rounded-full border-t-blue-500"
+                ></div>
+            </div>
+            <tr class="text-red-500">
+                <td>2025/2/6</td>
+                <td>0</td>
+                <td>テスト</td>
+                <td>貸出</td>
+                <td>2</td>
+            </tr>
+        </div>
+    </body>
+</html>
