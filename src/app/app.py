@@ -72,7 +72,7 @@ def use_return_api():
                 {"item_left_amount": item["item_left_amount"]}
             ).where("item_id", "=", item["item_id"]).execute()
         return jsonify({"success": True, "historyset_id": historyset_id})
-    return jsonify({"error": "Invalid request"})
+    return jsonify({"error": "Invalid request"}), 400
 
 
 @app.route("/api/historyset/<int:historyset_id>")
@@ -104,7 +104,7 @@ def get_historyset(historyset_id):
     return jsonify(res)
 
 
-@app.route("/api/item", methods=["GET"])
+@app.route("/api/item", methods=["GET", "POST", "PUT", "DELETE"])
 def get_items():
     if request.method == "GET":
         id = request.args.get("id")
@@ -121,7 +121,81 @@ def get_items():
         else:
             res = db.query().table("items").select("*").execute()
             return jsonify(res)
-    return jsonify({"error": "Invalid request"})
+    elif request.method == "PUT":
+        data = request.form["data"]
+        data = json.loads(data)
+        ret = (
+            db.query()
+            .table("items")
+            .update(
+                {
+                    "item_name": data["name"],
+                    "item_total_amount": data["total"],
+                    "item_left_amount": data["available"],
+                }
+            )
+            .where("item_id", "=", data["item_id"])
+            .execute()
+        )
+        if ret.data != []:
+            return jsonify({"success": True})
+        else:
+            return jsonify({"error": "Update failed: item_id not found"}), 404
+    elif request.method == "POST":
+        data = request.form["data"]
+        data = json.loads(data)
+        try:
+            ret = (
+                db.query()
+                .table("items")
+                .insert(
+                    {
+                        "item_name": data["name"],
+                        "item_total_amount": data["total"],
+                        "item_left_amount": data["available"],
+                    }
+                )
+                .execute()
+            )
+            if ret.data != []:
+                return jsonify({"success": True})
+            else:
+                return jsonify({"error": "Insert failed"}), 500
+        except Exception:
+            return jsonify({"error": "Insert failed by API error"}), 500
+    elif request.method == "DELETE":
+        id = request.args.get("id")
+        id = int(id) if id else None
+        if id:
+            try:
+                ret = (
+                    db.query()
+                    .table("items")
+                    .delete()
+                    .where("item_id", "=", id)
+                    .execute()
+                )
+                if ret.data != []:
+                    return jsonify({"success": True})
+                else:
+                    return jsonify({"error": "Delete failed: item_id not found"}), 404
+            except Exception:
+                return jsonify({"error": "Delete failed by API error"}), 500
+        else:
+            return jsonify({"error": "Invalid request"}), 400
+
+    return jsonify({"error": "Invalid request"}), 400
+
+
+@app.route("/api/history", methods=["GET"])
+def get_histories():
+    if request.method == "GET":
+        id = request.args.get("id")
+        id = int(id) if id else None
+        if id:
+            res = db.get_histories_of_item(id)
+            return jsonify(res)
+    return jsonify({"error": "Invalid request"}), 400
 
 
 if __name__ == "__main__":

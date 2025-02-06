@@ -18,14 +18,14 @@ class DB:
     def get_items_in_history(self, historyset_id: int):
         return self.client.rpc(
             "get_items_in_history", {"historyset_id": historyset_id}
-        ).data
+        ).execute().data
         # SELECT history.item_id, item_name, item_amount, item_total_amount, item_left_amount
         # FROM history
         # LEFT JOIN items ON history.item_id = items.item_id
         # WHERE history.historyset_id = $1;
 
     def get_histories_of_item(self, item_id: int):
-        return self.client.rpc("get_histories_of_item", {"item_id": item_id}).data
+        return self.client.rpc("get_histories_of_item", {"item_id": item_id}).execute().data
         # SELECT history.created_at, users.user_id, users.user_name, history.item_amount
         # FROM history
         # LEFT JOIN historyset
