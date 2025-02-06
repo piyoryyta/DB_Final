@@ -170,3 +170,22 @@ function requestUseReturn(
         }
     );
 }
+
+function GetItemHistory(
+    item_id,
+    onSuccessCallback = (data) => {},
+    onErrorCallback = (error) => {}
+) {
+    $.ajax({
+        url: "/api/history",
+        type: "GET",
+        data: { id: item_id },
+    }).then(
+        (data) => {
+            onSuccessCallback(data);
+        },
+        (error) => {
+            onErrorCallback(error);
+        }
+    );
+}

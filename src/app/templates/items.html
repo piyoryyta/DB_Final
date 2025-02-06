@@ -48,12 +48,12 @@
                     >
                         <div class="flex-grow"></div>
                         <button
-                            class="bg-sky-400 rounded-lg px-3 py-1 disabled:bg-gray-500"
+                            class="update-item bg-sky-400 rounded-lg px-3 py-1 disabled:bg-gray-500"
                         >
                             更新
                         </button>
                         <button
-                            class="bg-red-800 text-white rounded-lg px-3 py-1 disabled:bg-gray-500"
+                            class="delete-item bg-red-800 text-white rounded-lg px-3 py-1 disabled:bg-gray-500"
                         >
                             削除
                         </button>
@@ -73,12 +73,12 @@
                     <div class="pl-12 detail-item-amount text-lg md:text-5xl">
                         0/0
                     </div>
-                    <details disabled class="text-xl md:text-4xl">
+                    <details disabled class="history text-xl md:text-4xl">
                         <summary>貸出履歴</summary>
                         <table
-                            class="p-10 pl-12 text-lg md:text-4xl border-collapse [&_td]:border [&_td]:border-slate-700 bg-gray-50 grow"
+                            class="history-table m-3 p-10 pl-12 text-lg md:text-4xl border-collapse [&_td]:border [&_td]:border-slate-700 bg-gray-50 grow"
                         >
-                            <tr class="bg-gray-300">
+                            <thead class="bg-gray-300">
                                 <th>日付</th>
                                 <th>ユーザーID</th>
                                 <th>ユーザー名</th>
@@ -114,6 +114,7 @@
                     class="animate-spin h-10 w-10 border-4 border-blue-500/10 rounded-full border-t-blue-500"
                 ></div>
             </div>
+            <tr class="text-red-500"><td>2025/2/6</td><td>0</td><td>テスト</td><td>貸出</td><td>2</td></tr>
         </div>
     </body>
 </html>
