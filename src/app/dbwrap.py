@@ -148,6 +148,7 @@ class _DBQuery:
             query = query.table(self._table).delete()
             query = self._build_where(query)
             res = query.execute()
+            return res
         else:
             raise ValueError("Operation not specified")
 

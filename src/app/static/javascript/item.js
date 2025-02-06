@@ -18,12 +18,13 @@ function UpdateItem(
     $.ajax({
         url: "/api/item",
         type: "PUT",
-        data: {
+        data: JSON.stringify({
             id: id,
             name: name,
             total: total,
             available: available,
-        },
+        }),
+        contentType: "application/json",
     }).then(
         (data) => {
             onSuccessCallback(data);
@@ -43,11 +44,13 @@ function AddItem(
 ) {
     $.ajax({
         url: "/api/item",
-        type: "PUT",
+        type: "POST",
         data: {
-            name: name,
-            total: total,
-            available: available,
+            data: JSON.stringify({
+                name: name,
+                total: total,
+                available: available,
+            }),
         },
     }).then(
         (data) => {

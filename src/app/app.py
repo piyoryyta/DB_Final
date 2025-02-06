@@ -122,8 +122,8 @@ def get_items():
             res = db.query().table("items").select("*").execute()
             return jsonify(res)
     elif request.method == "PUT":
-        data = request.form["data"]
-        data = json.loads(data)
+        data = request.json
+        print(data)
         ret = (
             db.query()
             .table("items")
@@ -134,7 +134,7 @@ def get_items():
                     "item_left_amount": data["available"],
                 }
             )
-            .where("item_id", "=", data["item_id"])
+            .where("item_id", "=", data["id"])
             .execute()
         )
         if ret.data != []:
@@ -142,6 +142,7 @@ def get_items():
         else:
             return jsonify({"error": "Update failed: item_id not found"}), 404
     elif request.method == "POST":
+        print(request.form["data"])
         data = request.form["data"]
         data = json.loads(data)
         try:
@@ -164,7 +165,7 @@ def get_items():
         except Exception:
             return jsonify({"error": "Insert failed by API error"}), 500
     elif request.method == "DELETE":
-        id = request.args.get("id")
+        id = request.form["id"]
         id = int(id) if id else None
         if id:
             try:
@@ -179,7 +180,8 @@ def get_items():
                     return jsonify({"success": True})
                 else:
                     return jsonify({"error": "Delete failed: item_id not found"}), 404
-            except Exception:
+            except Exception as e:
+                print(e)
                 return jsonify({"error": "Delete failed by API error"}), 500
         else:
             return jsonify({"error": "Invalid request"}), 400
