@@ -22,12 +22,7 @@ def use_return():
 
 @app.route("/use-return/complete/<int:historyset_id>")
 def use_return_complete(historyset_id):
-    history = db.function("get_items_in_history", {"historyset_id": historyset_id}).data
-    #               SELECT history.item_id, item_name, item_amount, item_total_amount, item_left_amount
-    #               FROM history
-    #               LEFT JOIN items ON history.item_id = items.item_id
-    #               WHERE history.historyset_id = $1;
-
+    history = db.get_items_in_history(historyset_id)
     is_use = False
     is_return = False
     if history:

@@ -15,12 +15,27 @@ class DB:
     def query(self):
         return _DBQuery(self)
 
-    def function(self, name: str, args: dict):
-        return self.client.rpc(name, args).execute()
+    def get_items_in_history(self, historyset_id: int):
+        return self.client.rpc(
+            "get_items_in_history", {"historyset_id": historyset_id}
+        ).data
+        # SELECT history.item_id, item_name, item_amount, item_total_amount, item_left_amount
+        # FROM history
+        # LEFT JOIN items ON history.item_id = items.item_id
+        # WHERE history.historyset_id = $1;
+
+    def get_histories_of_item(self, item_id: int):
+        return self.client.rpc("get_histories_of_item", {"item_id": item_id}).data
+        # SELECT history.created_at, users.user_id, users.user_name, history.item_amount
+        # FROM history
+        # LEFT JOIN historyset
+        # ON history.historyset_id = historyset.historyset_id
+        # LEFT JOIN users
+        # ON historyset.user_id = users.user_id
+        # WHERE item_id = $1;
 
 
 class _DBQuery:
-
     def __init__(self, db: DB):
         self._db = db
         self._mode = None
