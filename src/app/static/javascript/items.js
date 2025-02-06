@@ -32,10 +32,13 @@ $(function () {
         $(".item-detail").attr("disabled", false);
         $(".history").removeAttr("open");
         $(".history").removeAttr("disabled");
-        $(".detail-item-id").text(item.id);
+        $(".detail-item-id").text(item.id || "?");
         $(".detail-item-name").val(item.name);
         $(".detail-item-name").attr("placeholder", item.name);
-        $(".detail-item-amount").text(`${item.available}/${item.total}`);
+        $(".detail-item-available").val(item.available);
+        $(".detail-item-available").attr("placeholder", item.available);
+        $(".detail-item-total").val(item.total);
+        $(".detail-item-total").attr("placeholder", item.total);
     }
 
     getItems(
@@ -52,23 +55,17 @@ $(function () {
     );
     $("#hack").remove();
     $("#addItem").on("click", function () {
-        item = new Item(0, "", 0, 0);
-        AddItem(
-            item.name,
-            item.total,
-            item.available,
-            (data) => {
-                item.id = data.item_id;
-                items.push(item);
-                addItembox(item);
-            },
-            (error) => {
-                console.error(error);
-            }
-        );
+        current_item = new Item(null, "", 0, 0);
+        updateItemDetails(current_item);
     });
     $(".delete-item").on("click", function () {
         if (!current_item) {
+            return;
+        }
+        if (current_item.id == null) {
+            current_item = null;
+            $(".item-detail").attr("disabled", true);
+            $(".history").attr("disabled");
             return;
         }
         DeleteItem(
@@ -90,7 +87,26 @@ $(function () {
             return;
         }
         current_item.name = $(".detail-item-name").val();
+        current_item.total = parseInt($(".detail-item-total").val());
+        current_item.available = parseInt($(".detail-item-available").val());
         console.log(current_item);
+        if (current_item.id == null) {
+            AddItem(
+                current_item.name,
+                current_item.total,
+                current_item.available,
+                (data) => {
+                    current_item.id = data.item_id;
+                    $(".item-detail").attr("disabled", true);
+                    items.push(current_item);
+                    addItembox(current_item);
+                },
+                (error) => {
+                    console.error(error);
+                }
+            );
+            return;
+        }
         UpdateItem(
             current_item.id,
             current_item.name,
@@ -123,12 +139,16 @@ $(function () {
                 for (let i = 0; i < data.length; i++) {
                     console.log(data[i].item_amount);
                     let tr = $("<tr>").append(
-                        "<td>" + new Date(data[i].created_at).toLocaleDateString() + "</td>",
+                        "<td>" +
+                            new Date(data[i].created_at).toLocaleDateString() +
+                            "</td>",
                         "<td>" + data[i].user_id + "</td>",
                         "<td>" + data[i].user_name + "</td>",
-                        "<td>" + (data[i].item_amount > 0 ? "貸出" : "返却") + "</td>",
-                        "<td>" + Math.abs(data[i].item_amount) + "</td>",
-                    )
+                        "<td>" +
+                            (data[i].item_amount > 0 ? "貸出" : "返却") +
+                            "</td>",
+                        "<td>" + Math.abs(data[i].item_amount) + "</td>"
+                    );
                     if (data[i].item_amount > 0) {
                         tr.addClass("text-red-500");
                     }
