@@ -20,13 +20,17 @@
         <title>在庫管理システム</title>
     </head>
     <body>
-        <div class="flex h-screen w-screen flex-col text-white">
+        <div class="flex h-screen w-screen flex-col text-white bg-stone-100">
             <div
                 class="flex p-5 items-center justify-center bg-sky-950 text-xl text-white lg:text-7xl"
             >
                 アイテム管理
             </div>
-            <div class="flex-1 bg-stone-100 p-5 min-h-0 flex">
+            <a
+                href="{{url_for('index')}}"
+                class="flex p-5 items-center w-40 m-3 rounded-lg justify-center bg-sky-900 text-md text-white lg:text-2xl"
+                >戻る</a>
+            <div class="flex-1 p-5 min-h-0 flex">
                 <div
                     class="item-list relative flex flex-col gap-3 h-full overflow-y-auto p-5 w-70 text-center text-xl shrink-0"
                 >
