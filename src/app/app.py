@@ -158,7 +158,7 @@ def get_items():
                 .execute()
             )
             if ret.data != []:
-                return jsonify({"success": True})
+                return jsonify({"success": True, "item_id": ret.data[0]["item_id"]})
             else:
                 return jsonify({"error": "Insert failed"}), 500
         except Exception:

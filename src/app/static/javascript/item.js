@@ -7,6 +7,77 @@ class Item {
     }
 }
 
+function UpdateItem(
+    id,
+    name,
+    total,
+    available,
+    onSuccessCallback = (data) => {},
+    onErrorCallback = (error) => {}
+) {
+    $.ajax({
+        url: "/api/item",
+        type: "PUT",
+        data: {
+            id: id,
+            name: name,
+            total: total,
+            available: available,
+        },
+    }).then(
+        (data) => {
+            onSuccessCallback(data);
+        },
+        (error) => {
+            onErrorCallback(error);
+        }
+    );
+}
+
+function AddItem(
+    name,
+    total,
+    available,
+    onSuccessCallback = (data) => {},
+    onErrorCallback = (error) => {}
+) {
+    $.ajax({
+        url: "/api/item",
+        type: "PUT",
+        data: {
+            name: name,
+            total: total,
+            available: available,
+        },
+    }).then(
+        (data) => {
+            onSuccessCallback(data);
+        },
+        (error) => {
+            onErrorCallback(error);
+        }
+    );
+}
+
+function DeleteItem(
+    id,
+    onSuccessCallback = (data) => {},
+    onErrorCallback = (error) => {}
+) {
+    $.ajax({
+        url: "/api/item",
+        type: "DELETE",
+        data: { id: id },
+    }).then(
+        (data) => {
+            onSuccessCallback(data);
+        },
+        (error) => {
+            onErrorCallback(error);
+        }
+    );
+}
+
 function getItems(
     onSuccessCallback = (items) => {},
     onErrorCallback = (error) => {}
