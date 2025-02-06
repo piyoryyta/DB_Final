@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="icon"
+            href="{{url_for('static', filename='icons/icon_72x72.png')}}"
+            type="image/png"
+        />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/static/images/icons/favicon.ico"
+        />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="static/javascript/item.js"></script>
+        <script src="static/javascript/items.js"></script>
+        <link rel="stylesheet" href="/static/css/styles.css" />
+        <title>在庫管理システム</title>
+    </head>
+    <body class="login-not-required">
+        <div class="flex h-screen w-screen flex-col text-white bg-stone-100">
+            <div
+                class="flex p-5 items-center justify-center bg-sky-950 text-xl text-white lg:text-7xl"
+            >
+                ログイン
+            </div>
+            <div
+                class="flex flex-col flex-grow items-center justify-center gap-10 bg-stone-100 text-black"
+            >
+                ユーザーを選択してください。
+                <table class="[&_*]:border [&_*]:border-slate-700 [&_td]:p-1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>名前</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{user.user_id}}</td>
+                            <td>{{user.user_name}}</td>
+                            <td>
+                                <a
+                                    href="/login?user_id={{user.user_id}}"
+                                    class="bg-blue-950 text-white px-3 rounded-lg"
+                                    >選択</a
+                                >
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <a href="/users" class="bg-blue-950 text-white p-3 rounded-lg">
+                    ユーザー管理
+                </a>
+            </div>
+        </div>
+        <!-- A hack for tailwindcss to generate the CSS for jquery generated elements -->
+        <div class="hidden" id="hack"></div>
+    </body>
+</html>

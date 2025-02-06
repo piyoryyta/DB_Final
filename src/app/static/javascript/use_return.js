@@ -162,30 +162,8 @@ $(function () {
                     parseInt($(`#item-${index}-quantity`).val()),
             };
         });
-        user_id = "0"; // Dummy user_id
+        user_id = current_user.user_id;
         console.log(data);
-        // $.ajax({
-        //     url: "/api/use-return",
-        //     type: "POST",
-        //     data: { data: JSON.stringify(data), user_id: user_id },
-        // }).then(
-        //     (data) => {
-        //         if (data.success) {
-        //             for (let i = 0; i < items.length; i++) {
-        //                 // For the users who dare to use the back button
-        //                 removeItembox(i);
-        //             }
-        //             window.location.href =
-        //                 "/use-return/complete/" + data.historyset_id;
-        //         } else {
-        //             showError(data.error);
-        //         }
-        //     },
-        //     (error) => {
-        //         console.error(error);
-        //         showError("リクエストの送信に失敗しました。");
-        //     }
-        // );
         requestUseReturn(
             user_id,
             items,

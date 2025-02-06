@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, jsonify
+import datetime
+from flask import Flask, render_template, request, jsonify, make_response, redirect
 from dotenv import load_dotenv
 from dbwrap import DB
 import json
+import urllib.parse
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
@@ -43,6 +45,39 @@ def use_return_complete(historyset_id):
 @app.route("/items")
 def items():
     return render_template("items.html")
+
+
+@app.route("/users")
+def users():
+    return render_template("users.html")
+
+
+@app.route("/login", methods=["GET"])
+def login():
+    if request.method == "GET":
+        id = request.args.get("user_id")
+        if id:
+            response = make_response(redirect("/"))
+            ret = (
+                db.query()
+                .table("users")
+                .select("*")
+                .where("user_id", "=", id)
+                .execute()
+            )
+            if ret:
+                now = datetime.datetime.now().timestamp()
+                response.set_cookie(
+                    "user",
+                    urllib.parse.quote(json.dumps(ret[0])),
+                    expires=now + 60 * 60,
+                )
+                return response
+
+    users = db.query().table("users").select("*").execute()
+    response = make_response(render_template("login.html", users=users))
+    response.delete_cookie("user")
+    return response
 
 
 @app.route("/api/use-return", methods=["POST"])
@@ -197,6 +232,78 @@ def get_histories():
         if id:
             res = db.get_histories_of_item(id)
             return jsonify(res)
+    return jsonify({"error": "Invalid request"}), 400
+
+
+@app.route("/api/user", methods=["GET", "POST", "PUT", "DELETE"])
+def get_users():
+    if request.method == "GET":
+        id = request.args.get("id")
+        if id:
+            res = (
+                db.query()
+                .table("users")
+                .select("*")
+                .where("user_id", "=", id)
+                .execute()
+            )
+            return jsonify(res)
+        else:
+            res = db.query().table("users").select("*").execute()
+            return jsonify(res)
+    elif request.method == "PUT":
+        data = request.json
+        ret = (
+            db.query()
+            .table("users")
+            .update({"user_name": data["name"]})
+            .where("user_id", "=", data["id"])
+            .execute()
+        )
+        if ret.data != []:
+            return jsonify({"success": True})
+        else:
+            return jsonify({"error": "Update failed: user_id not found"}), 404
+    elif request.method == "POST":
+        print(request.form)
+        return ""
+        # data = request.form["data"]
+        # data = json.loads(data)
+        # try:
+        #     ret = (
+        #         db.query()
+        #         .table("users")
+        #         .insert({"user_name": data["name"]})
+        #         .execute()
+        #     )
+        #     if ret.data != []:
+        #         return jsonify({"success": True, "user_id": ret.data[0]["user_id"]})
+        #     else:
+        #         return jsonify({"error": "Insert failed"}), 500
+        # except Exception:
+        #     return jsonify({"error": "Insert failed by API error"}), 500
+    elif request.method == "DELETE":
+        print(request.form)
+        return ""
+        # id = request.form["id"]
+        # if id:
+        #     try:
+        #         ret = (
+        #             db.query()
+        #             .table("users")
+        #             .delete()
+        #             .where("user_id", "=", id)
+        #             .execute()
+        #         )
+        #         if ret.data != []:
+        #             return jsonify({"success": True})
+        #         else:
+        #             return jsonify({"error": "Delete failed: user_id not found"}), 404
+        #     except Exception as e:
+        #         print(e)
+        #         return jsonify({"error": "Delete failed by API error"}), 500
+        # else:
+        #     return jsonify({"error": "Invalid request"}), 400
     return jsonify({"error": "Invalid request"}), 400
 
 

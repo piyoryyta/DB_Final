@@ -14,10 +14,12 @@
             href="/static/images/icons/favicon.ico"
         />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
         <script src="static/javascript/item.js"></script>
         <script src="static/javascript/items.js"></script>
+        <script src="static/javascript/user.js"></script>
         <link rel="stylesheet" href="/static/css/styles.css" />
-        <title>在庫管理システム</title>
+        <title>アイテム管理</title>
     </head>
     <body>
         <div class="flex h-screen w-screen flex-col text-white bg-stone-100">
@@ -25,6 +27,18 @@
                 class="flex p-5 items-center justify-center bg-sky-950 text-xl text-white lg:text-7xl"
             >
                 アイテム管理
+            </div>
+            <div class="fixed top-0 right-0 m-2 p-5 text-md text-white">
+                こんにちは、
+                <script>
+                    document.write(current_user.user_name);
+                </script>
+                さん。
+                <a
+                    href="/login"
+                    class="bg-blue-950  p-3 rounded-lg underline"
+                    >ログアウト</a
+                >
             </div>
             <a
                 href="{{url_for('index')}}"
